@@ -16,7 +16,7 @@ app.get("/exercise-2-redirected", (req, res) => {
 app.get("/exercise-3", (req, res) => {
     res.render('exercise-3.ejs');
 })
-app.get('/result', (req, res) => {
+app.get('/exercise-3/result', (req, res) => {
     const query = req.query.string;
 
 
