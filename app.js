@@ -21,8 +21,8 @@ app.get("/exercise-3", (req, res) => {
 
     res.render("exercise-3.ejs");
 })
-app.post('/exercise-3', (req, res) => {
-    const query = req.body.string;
+app.get('/exercise-3/result', (req, res) => {
+    const query = req.query.string;
     res.render('result.ejs', { query });
 })
 app.get(
@@ -44,7 +44,7 @@ app.get(
 
         res.render('exercise-4.ejs', { lines: paginatedLines, totalPages, pageno });
     })
-app.post('/exercise-4', (req, res) => {
+app.post('/exercise-4/result', (req, res) => {
     const IP = req.ip;
     const browser = req.useragent.browser;
     const requestTime = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
@@ -56,10 +56,13 @@ app.post('/exercise-4', (req, res) => {
             } else
                 console.log("File deleted");
         })
-        res.redirect("/exercise-3");
+        res.redirect("/exercise-4");
     } else {
 
         const query = req.body.string;
+        if (query = "") {
+            res.redirect("/exercise-4");
+        }
         data = query;
         newLine = [IP, browser, requestTime, data];
         res.render('result.ejs', { query });
