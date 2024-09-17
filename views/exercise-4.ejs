@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<head>
+    <title>
+        Exercise-4
+    </title>
+</head>
+
+<body>
+    <form action="/exercise-4" method="post">
+        <input type="text" placeholder="Search" name="string">
+        <button>Submit</button>
+
+    </form>
+    <h2>Search History</h2>
+    <ul>
+        <% for (line of lines){ %>
+            <li>
+                <%= line %>
+            </li>
+            <% } %>
+    </ul>
+    <form action="/exercise-4" method="post">
+        <input type="hidden" name="clear" value=true>
+        <button>Clear History</button>
+    </form>
+
+    <div>
+        <% if (pageno > 1) { %>
+            <a href="/exercise-4?page=<%= pageno - 1 %>">Previous</a>
+            <% } %>
+                <span>Page <%= pageno %> of <%= totalPages %></span>
+                <% if (pageno < totalPages) { %>
+                    <a href="/exercise-4?page=<%= pageno + 1 %>">Next</a>
+                    <% } %>
+    </div>
+
+</body>
+
+</html>

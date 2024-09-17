@@ -1,11 +1,13 @@
 const express = require("express");
 const app = express();
-const port = 3000;
+const port = 8080;
 const fs = require("fs");
 const readlineSync = require('readline-sync');
-let item = "";
-let csvData = [];
+let data = "";
 
+
+
+app.use(require('express-useragent').express());
 
 
 app.set('view engine', 'ejs');
@@ -22,12 +24,36 @@ app.get("/exercise-2-redirected", (req, res) => {
 })
 app.get("/exercise-3", (req, res) => {
 
-    const fileContent = fs.readFileSync('search.csv', 'utf-8');
-    const lines = fileContent.split('\n');
-
-    res.render('exercise-3.ejs', { lines });
+    res.render("exercise-3.ejs");
 })
 app.post('/exercise-3', (req, res) => {
+    const query = req.body.string;
+    res.render('result.ejs', { query });
+})
+app.get(
+    "/exercise-4", (req, res) => {
+        const pageno = req.query.page || 1;
+        const start = (pageno - 1) * 10;
+        let fileContent = '';
+        try {
+            fileContent = fs.readFileSync('search.csv', 'utf-8')
+        } catch (err) {
+            console.log(err);
+        }
+        console.log(fileContent);
+        const lines = fileContent.split('\n');
+        console.log(lines);
+        const totalPages = Math.ceil(lines.length / 10);
+        const end = Math.min(start + 10, lines.length);
+        paginatedLines = lines.slice(start, end);
+
+        res.render('exercise-4.ejs', { lines: paginatedLines, totalPages, pageno });
+    })
+app.post('/exercise-4', (req, res) => {
+    const IP = req.ip;
+    const browser = req.useragent.browser;
+    const requestTime = new Date();
+    const obj = { IP, browser, requestTime, data };
     if (req.body.clear) {
         fs.writeFile("search.csv", "", (err) => {
             if (err) {
@@ -39,13 +65,11 @@ app.post('/exercise-3', (req, res) => {
     } else {
 
         const query = req.body.string;
-
-        newLine = query;
+        data = query;
+        newLine = [IP, browser, requestTime, data];
         res.render('result.ejs', { query });
-
         fs.appendFile("search.csv", newLine + "\n", (err) => {
             if (err) throw err;
-            console.log("Saved to CSV");
         })
     }
 })

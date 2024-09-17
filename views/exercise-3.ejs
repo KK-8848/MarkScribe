@@ -12,19 +12,6 @@
         <button>Submit</button>
 
     </form>
-    <h2>Search History</h2>
-    <ul>
-        <% for (line of lines){ %>
-            <li>
-                <%= line %>
-            </li>
-            <% } %>
-    </ul>
-    <form action="/exercise-3" method="post">
-        <input type="hidden" name="clear" value=true>
-        <button>Clear History</button>
-    </form>
-
 </body>
 
 </html>
