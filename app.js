@@ -7,6 +7,8 @@ let data = "";
 app.use(require('express-useragent').express());
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }))
+app.set('trust proxy', true);
+
 
 app.get("/", (req, res) => {
     res.render('namaskara');
@@ -60,7 +62,7 @@ app.post('/exercise-4/result', (req, res) => {
     } else {
 
         const query = req.body.string;
-        if (query = "") {
+        if (query == "") {
             res.redirect("/exercise-4");
         }
         data = query;
