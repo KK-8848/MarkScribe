@@ -1,15 +1,10 @@
 const express = require("express");
 const app = express();
-const port = 8080;
+const port = 3008;
 const fs = require("fs");
 const readlineSync = require('readline-sync');
 let data = "";
-
-
-
 app.use(require('express-useragent').express());
-
-
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }))
 
@@ -52,7 +47,7 @@ app.get(
 app.post('/exercise-4', (req, res) => {
     const IP = req.ip;
     const browser = req.useragent.browser;
-    const requestTime = new Date();
+    const requestTime = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
     const obj = { IP, browser, requestTime, data };
     if (req.body.clear) {
         fs.writeFile("search.csv", "", (err) => {
