@@ -27,25 +27,25 @@ app.get('/exercise-3/result', (req, res) => {
     const query = req.query.string;
     res.render('result.ejs', { query });
 })
-app.get(
-    "/exercise-4", (req, res) => {
-        const pageno = req.query.page || 1;
-        const start = (pageno - 1) * 10;
-        let fileContent = '';
-        try {
-            fileContent = fs.readFileSync('search.csv', 'utf-8')
-        } catch (err) {
-            console.log(err);
-        }
-        console.log(fileContent);
-        const lines = fileContent.split('\n');
-        console.log(lines);
-        const totalPages = Math.ceil(lines.length / 10);
-        const end = Math.min(start + 10, lines.length);
-        paginatedLines = lines.slice(start, end);
+app.get("/exercise-4", (req, res) => {
+    const pageno = req.query.page || 1;
+    const start = (pageno - 1) * 10;
+    let fileContent = '';
+    try {
+        fileContent = fs.readFileSync('search.csv', 'utf-8')
+    } catch (err) {
+        console.log(err);
+    }
+    console.log(fileContent);
+    const lines = fileContent.split('\n');
+    console.log(lines);
+    const totalPages = Math.ceil(lines.length / 10);
+    const end = Math.min(start + 10, lines.length);
+    paginatedLines = lines.slice(start, end);
+    L = paginatedLines.map(line => line.split(','));
 
-        res.render('exercise-4.ejs', { lines: paginatedLines, totalPages, pageno });
-    })
+    res.render('exercise-4.ejs', { lines: L, totalPages, pageno });
+})
 app.post('/exercise-4/result', (req, res) => {
     const IP = req.ip;
     const browser = req.useragent.browser;
@@ -62,15 +62,17 @@ app.post('/exercise-4/result', (req, res) => {
     } else {
 
         const query = req.body.string;
+        console.log(query)
         if (query == "") {
             res.redirect("/exercise-4");
+        } else {
+            data = query;
+            newLine = [IP, browser, requestTime, data];
+            res.render('search.ejs', { query });
+            fs.appendFile("search.csv", newLine + "\n", (err) => {
+                if (err) throw err;
+            })
         }
-        data = query;
-        newLine = [IP, browser, requestTime, data];
-        res.render('result.ejs', { query });
-        fs.appendFile("search.csv", newLine + "\n", (err) => {
-            if (err) throw err;
-        })
     }
 })
 

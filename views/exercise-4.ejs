@@ -4,21 +4,56 @@
     <title>
         Exercise-4
     </title>
+    <style>
+        th,
+        td {
+            padding: 10px;
+        }
+    </style>
 </head>
 
 <body>
-    <form action="/exercise-4" method="post">
+    <form action="/exercise-4/result" method="post">
         <input type="text" placeholder="Search" name="string">
         <button>Submit</button>
 
     </form>
     <h2>Search History</h2>
     <ul>
-        <% for (line of lines){ %>
-            <li>
-                <%= line %>
-            </li>
-            <% } %>
+        <table>
+            <thead>
+                <tr>
+                    <th>IP Address </th>
+                    <th>Browser</th>
+                    <th>Date </th>
+                    <th>Time</th>
+                    <th>SearchQuery</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <% lines.forEach(row=> { %>
+                    <tr>
+                        <td>
+                            <%= row[0] %>
+                        </td>
+                        <td>
+                            <%= row[1] %>
+                        </td>
+                        <td>
+                            <%= row[2] %>
+                        </td>
+                        <td>
+                            <%= row[3] %>
+                        </td>
+                        <td>
+                            <%= row[4]  %>
+                        </td>
+
+                    </tr>
+                    <% });%>
+            </tbody>
+        </table>
     </ul>
     <form action="/exercise-4/result" method="post">
         <input type="hidden" name="clear" value=true>
