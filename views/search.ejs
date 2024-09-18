@@ -16,46 +16,47 @@
     <h1>You searched for:
         <%= query %>
     </h1>
-    <a href="/exercise-4">Search</a>
+    <a href="/exercise-4">Search Again</a>
+    <hr>
     <h2>Search History</h2>
-    <ul>
-        <table>
-            <thead>
-                <tr>
-                    <th>IP Address </th>
-                    <th>Browser</th>
-                    <th>Date </th>
-                    <th>Time</th>
-                    <th>SearchQuery</th>
 
-                </tr>
-            </thead>
-            <tbody>
+    <table>
+        <thead>
+            <tr>
+                <th>IP Address </th>
+                <th>Browser</th>
+                <th>Date </th>
+                <th>Time</th>
+                <th>SearchQuery</th>
 
-                <% if(lines){%>
-                    <%lines.forEach(row=> { %>
-                        <tr>
-                            <td>
-                                <%= row[0] %>
-                            </td>
-                            <td>
-                                <%= row[1] %>
-                            </td>
-                            <td>
-                                <%= row[2] %>
-                            </td>
-                            <td>
-                                <%= row[3] %>
-                            </td>
-                            <td>
-                                <%= row[4]  %>
-                            </td>
+            </tr>
+        </thead>
+        <tbody>
 
-                        </tr>
-                        <% });}%>
-            </tbody>
-        </table>
-    </ul>
+            <% if(lines){%>
+                <%lines.forEach(row=> { %>
+                    <tr>
+                        <td>
+                            <%= row[0] %>
+                        </td>
+                        <td>
+                            <%= row[1] %>
+                        </td>
+                        <td>
+                            <%= row[2] %>
+                        </td>
+                        <td>
+                            <%= row[3] %>
+                        </td>
+                        <td>
+                            <%= row[4]  %>
+                        </td>
+
+                    </tr>
+                    <% });}%>
+        </tbody>
+    </table>
+
     <form action="/exercise-4/result" method="post">
         <input type="hidden" name="clear" value=true>
         <button>Clear History</button>

@@ -2,6 +2,30 @@ const express = require("express");
 const app = express();
 const port = 3007;
 const fs = require("fs");
+const marked = require('marked');
+
+const showdown = require('showdown');
+
+const markdownString = "< person > K  </person>";
+const converter = new showdown.Converter();
+const html = converter.makeHtml(markdownString);
+console.log(html)
+
+if (html !== '') { // or check for specific HTML tags/structure
+    console.log('The string is in Markdown format');
+} else {
+    console.log('The string is not in Markdown format');
+}
+const markdownIt = require('markdown-it');
+const md = markdownIt();
+
+const markdownText = "<person>K</person>";
+const parsedHtml = md.render(markdownText);
+console.log(!md);
+console.log(parsedHtml);
+
+// Validate the parsed HTML against a schema or expected output
+// For example, ensure the HTML has a specific structure or contains certain elements
 const readlineSync = require('readline-sync');
 let data = "";
 app.use(require('express-useragent').express());
@@ -81,6 +105,7 @@ app.post('/exercise-4/result', (req, res) => {
 app.get("/exercise-4/result", (req, res) => {
     res.render('search.ejs', { query, lines: [], pageno: 1, totalPages: 1 })
 })
+
 
 
 app.listen(port, () => { console.log("Server is running") })
