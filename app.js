@@ -93,7 +93,8 @@ app.get("/exercise-5/post", (req, res) => {
     res.render('exercise-5.ejs');
 })
 app.post("/exercise-5/submission", (req, res) => {
-    const content = req.body.string;
+    const content = req.body.text;
+    console.log(req.body);
     if (!content) {
         res.redirect('/exercise-5/post');
     }
