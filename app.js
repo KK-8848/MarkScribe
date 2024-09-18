@@ -87,12 +87,15 @@ app.get("/exercise-4/result", (req, res) => {
     res.render('search.ejs', { query, lines: [], pageno: 1, totalPages: 1 })
 })
 app.get("/exercise-5", (req, res) => {
+    res.render('post.ejs');
+})
+app.get("/exercise-5/post", (req, res) => {
     res.render('exercise-5.ejs');
 })
-app.post("/exercise-5/post", (req, res) => {
+app.post("/exercise-5/submission", (req, res) => {
     const content = req.body.string;
     if (!content) {
-        res.redirect('/exercise-5');
+        res.redirect('/exercise-5/post');
     }
 
     const date = new Date();
