@@ -6,9 +6,25 @@
 </head>
 
 <body>
-    <a href="/exercise-5/post">
-        <button>Post</button>
-    </a>
+    <p>
+        <a href="/Blogs/post">
+            <button>Post</button>
+        </a>
+    </p>
+    <% if(files) {%>
+        <ol>
+
+            <% files.forEach(file => {%>
+                <% file=file.replace(/\.[^/.]+$/, "")%>
+                    <li>
+                        <a href="/Blogs/<%=file%>">
+                            <%= file %>
+                        </a>
+                    </li>
+
+                    <% }); %>
+        </ol>
+        <% }%>
 </body>
 
 

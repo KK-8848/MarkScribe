@@ -1,20 +1,19 @@
 const express = require("express");
 const app = express();
-const port = 3007;
+const port = 3000;
 const fs = require("fs");
 const path = require("path");
 const readlineSync = require('readline-sync');
-let data = "";
+const files = [];
 app.use(require('express-useragent').express());
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }))
 app.set('trust proxy', true);
+const markdown = require("markdown-it");
+const md = markdown();
+const he = require('he');
 
-function dateParse(dateTime) {
-    const date = dateTime[0].split("/").join("");
-    const time = dateTime[1].split(":").join("")
 
-}
 app.get("/", (req, res) => {
     res.render('namaskara');
 })
@@ -86,17 +85,24 @@ app.post('/exercise-4/result', (req, res) => {
 app.get("/exercise-4/result", (req, res) => {
     res.render('search.ejs', { query, lines: [], pageno: 1, totalPages: 1 })
 })
-app.get("/exercise-5", (req, res) => {
-    res.render('post.ejs');
+app.get("/Blogs", (req, res) => {
+    const dirpath = path.join(__dirname, "markdownfiles");
+    fs.readdir(dirpath, (err, files) => {
+        if (err) throw err;
+        else
+            res.render('post.ejs', { files });
+    });
 })
-app.get("/exercise-5/post", (req, res) => {
+app.get("/Blogs/post", (req, res) => {
     res.render('exercise-5.ejs');
 })
-app.post("/exercise-5/submission", (req, res) => {
-    const content = req.body.text;
-    console.log(req.body);
+app.post("/Blogs/submission", (req, res) => {
+    const content = md.render(req.body.text);
+
+
+    console.log(content);
     if (!content) {
-        res.redirect('/exercise-5/post');
+        res.redirect('/Blogs/post');
     }
 
     const date = new Date();
@@ -113,7 +119,23 @@ app.post("/exercise-5/submission", (req, res) => {
         if (err) throw err;
 
     })
+    files.push(filename);
     res.render("saved.ejs", { filename });
+})
+app.get("/Blogs/:filename", (req, res) => {
+    const file = req.params.filename;
+    console.log(file);
+    const filepath = path.join(__dirname, "markdownfiles", file + ".md");
+    fs.readFile(filepath, 'utf-8', (err, data) => {
+        if (err) throw err;
+        else {
+
+            const content = he.decode(md.render(data));
+            console.log(content);
+            res.render('blog.ejs', { content });
+        }
+    })
+
 })
 
 
