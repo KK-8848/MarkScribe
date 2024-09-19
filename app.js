@@ -126,11 +126,11 @@ app.get("/Blogs/:filename", (req, res) => {
     const file = req.params.filename;
     console.log(file);
     const filepath = path.join(__dirname, "markdownfiles", file + ".md");
-    fs.readFile(filepath, 'utf-8', (err, data) => {
+    fs.readFile(filepath, 'utf-8', (err, content) => {
         if (err) throw err;
         else {
 
-            const content = he.decode(md.render(data));
+            // const content = he.decode(md.render(data));
             console.log(content);
             res.render('blog.ejs', { content });
         }
