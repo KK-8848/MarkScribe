@@ -86,7 +86,7 @@ app.get("/exercise-4/result", (req, res) => {
     res.render('search.ejs', { query, lines: [], pageno: 1, totalPages: 1 })
 })
 app.get("/blogs", (req, res) => {
-    const dirpath = path.join(__dirname, "blogs", "markdownfiles");
+    const dirpath = path.join(__dirname, "blogs", "markdown-files");
     fs.readdir(dirpath, (err, files) => {
         if (err) throw err;
         else
@@ -113,27 +113,27 @@ app.post("/blogs/submission", (req, res) => {
     const hour = String(date.getHours()).padStart(2, '0');
     const minute = String(date.getMinutes()).padStart(2, '0');
     const second = String(date.getSeconds()).padStart(2, '0');
-    const filename = `${year}${month}${day}${hour}${minute}${second}.md`
-    const filepath = path.join(__dirname, "blogs", "markdownfiles", filename);
+    const fileName = `${year}${month}${day}${hour}${minute}${second}.md`
+    const filePath = path.join(__dirname, "blogs", "markdown-files", fileName);
     console.log(mdContent);
-    fs.writeFile(filepath, mdContent, (err) => {
+    fs.writeFile(filePath, mdContent, (err) => {
         if (err) throw err;
 
     })
     const htmlFile = `${year}${month}${day}${hour}${minute}${second}.html`;
-    const htmlPath = path.join(__dirname, "blogs", "htmlfiles", htmlFile);
+    const htmlPath = path.join(__dirname, "blogs", "html-files", htmlFile);
     fs.writeFile(htmlPath, content, (err) => {
         if (err) throw err;
         else
             console.log("file written");
     })
-    res.render("saved.ejs", { filename });
+    res.render("saved.ejs", { fileName });
 })
-app.get("/blogs/:filename", (req, res) => {
-    const file = req.params.filename;
+app.get("/blogs/:fileName", (req, res) => {
+    const file = req.params.fileName;
     console.log(file);
-    const filepath = path.join(__dirname, "blogs", "htmlfiles", file + ".html");
-    fs.readFile(filepath, 'utf-8', (err, content) => {
+    const filePath = path.join(__dirname, "blogs", "html-files", file + ".html");
+    fs.readFile(filePath, 'utf-8', (err, content) => {
         if (err) throw err;
         else {
 
