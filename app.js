@@ -86,7 +86,7 @@ app.get("/exercise-4/result", (req, res) => {
     res.render('search.ejs', { query, lines: [], pageno: 1, totalPages: 1 })
 })
 app.get("/Blogs", (req, res) => {
-    const dirpath = path.join(__dirname, "markdownfiles");
+    const dirpath = path.join(__dirname, "Blogs", "markdownfiles");
     fs.readdir(dirpath, (err, files) => {
         if (err) throw err;
         else
@@ -97,6 +97,7 @@ app.get("/Blogs/post", (req, res) => {
     res.render('exercise-5.ejs');
 })
 app.post("/Blogs/submission", (req, res) => {
+    const mdContent = req.body.text;
     const content = md.render(req.body.text);
 
 
@@ -113,19 +114,25 @@ app.post("/Blogs/submission", (req, res) => {
     const minute = String(date.getMinutes()).padStart(2, '0');
     const second = String(date.getSeconds()).padStart(2, '0');
     const filename = `${year}${month}${day}${hour}${minute}${second}.md`
-    const filepath = path.join(__dirname, "markdownfiles", filename);
-    console.log(filepath);
-    fs.writeFile(filepath, content, (err) => {
+    const filepath = path.join(__dirname, "Blogs", "markdownfiles", filename);
+    console.log(mdContent);
+    fs.writeFile(filepath, mdContent, (err) => {
         if (err) throw err;
 
     })
-    files.push(filename);
+    const htmlFile = `${year}${month}${day}${hour}${minute}${second}.html`;
+    const htmlPath = path.join(__dirname, "Blogs", "htmlFiles", htmlFile);
+    fs.writeFile(htmlPath, content, (err) => {
+        if (err) throw err;
+        else
+            console.log("file written");
+    })
     res.render("saved.ejs", { filename });
 })
 app.get("/Blogs/:filename", (req, res) => {
     const file = req.params.filename;
     console.log(file);
-    const filepath = path.join(__dirname, "markdownfiles", file + ".md");
+    const filepath = path.join(__dirname, "Blogs", "htmlFiles", file + ".html");
     fs.readFile(filepath, 'utf-8', (err, content) => {
         if (err) throw err;
         else {
