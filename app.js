@@ -107,5 +107,5 @@ app.get("/exercise-4/result", (req, res) => {
 })
 
 
-
-app.listen(port, () => { console.log("Server is running") })
+module.exports= app;
+//app.listen(port, () => { console.log("Server is running") })
